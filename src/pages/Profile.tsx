@@ -1,5 +1,3 @@
-
-
 import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from "../hooks/useAuth";
 
@@ -20,13 +18,13 @@ const Profile = () => {
       <p>Name: {user.name}</p>
       <p>
         Role:{" "}
-        {user.roles?.map((role) => role.name).join(", ") || "N/A"}
+        {/* PERBAIKAN: ganti role.name */}
+        {user.roles?.join(", ") || "N/A"}
       </p>
       <p>Email: {user.email}</p>
       <p>Phone: {user.phone || "N/A"}</p>
       <button onClick={handleLogout}>Logout</button>
       <Link to="/bo">Go to Bo Profile</Link>
-      
     </div>
   );
 };

@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from "react";
-import { Link,  useParams } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import Sidebar from "../../components/Sidebar";
 import { useFetchProduct, useUpdateProduct } from "../../hooks/useProducts";
 import { useFetchCategories } from "../../hooks/useCategories";
@@ -17,7 +17,6 @@ const EditProduct = () => {
   const { data: categories, isPending: categoriesLoading } =
     useFetchCategories(); 
  
-
   const fileInputRef = useRef<HTMLInputElement | null>(null);
   const [imagePreview, setImagePreview] = useState(
     "/assets/images/icons/gallery-grey.svg"
@@ -30,7 +29,7 @@ const EditProduct = () => {
     setValue,
     formState: { errors },
   } = useForm<ProductFormData>({
-    resolver: zodResolver(productSchema),
+    resolver: zodResolver(productSchema) as any, // Menambahkan type assertion
   });
 
   useEffect(() => {
@@ -131,7 +130,7 @@ const EditProduct = () => {
         <main className="flex flex-col gap-6 flex-1">
           <div className="flex gap-6">
             <form
-              onSubmit={handleSubmit(onSubmit)}
+              onSubmit={handleSubmit((data) => onSubmit(data as ProductFormData))}
               className="flex flex-col w-full rounded-3xl p-[18px] gap-5 bg-white"
             >
               <h2 className="font-semibold text-xl capitalize">
@@ -154,8 +153,8 @@ const EditProduct = () => {
                     onChange={(e) => {
                       const file = e.target.files?.[0];
                       if (file) {
-                        setValue("thumbnail", file); // ✅ update react-hook-form
-                        setImagePreview(URL.createObjectURL(file)); // ✅ update preview
+                        setValue("thumbnail", file); // update react-hook-form
+                        setImagePreview(URL.createObjectURL(file)); // update preview
                       } else {
                         setImagePreview(
                           "/assets/images/icons/gallery-grey.svg"
@@ -311,7 +310,7 @@ const EditProduct = () => {
                 <p className="text-red-500">{errors.about.message}</p>
               )}
               <div className="flex items-center justify-end gap-4">
-              <Link to={'/products'}
+                <Link to={'/products'}
                   className="btn btn-red font-semibold"
                 >
                   Cancel

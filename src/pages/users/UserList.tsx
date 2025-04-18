@@ -1,7 +1,7 @@
 import { Link } from "react-router-dom";
 import Sidebar from "../../components/Sidebar";
 import { useFetchUsers, useDeleteUser } from "../../hooks/useUsers";
-import { User } from "../../types/types";
+// PERBAIKAN: hapus import User yang tidak digunakan
 import UserProfileCard from "../../components/UserProfileCard";
 import React from "react";
 
@@ -9,6 +9,7 @@ const UserList = () => {
   const { data: users, isPending } = useFetchUsers();
   const { mutate: deleteUser } = useDeleteUser();
 
+  // Implementasikan fungsi handleDelete
   const handleDelete = (id: number) => {
     if (window.confirm("Are you sure you want to delete this user?")) {
       deleteUser(id);
@@ -147,16 +148,27 @@ const UserList = () => {
                             </p>
                           </div>
                         </div>
-                        <Link to={`/users/edit/${user.id}`}
-                          className="btn btn-black min-w-[130px] font-semibold"
-                        >
-                          <img
-                            src="assets/images/icons/edit-white.svg"
-                            className="flex size-6 shrink-0"
-                            alt="icon"
-                          />
-                          Edit
-                        </Link>
+                        <div className="flex gap-2">
+                          <Link to={`/users/edit/${user.id}`} className="btn btn-black min-w-[130px] font-semibold">
+                            <img
+                              src="assets/images/icons/edit-white.svg"
+                              className="flex size-6 shrink-0"
+                              alt="icon"
+                            />
+                            Edit
+                          </Link>
+                          <button 
+                            onClick={() => handleDelete(user.id)} 
+                            className="btn btn-red min-w-[130px] font-semibold"
+                          >
+                            <img
+                              src="assets/images/icons/trash-white.svg"
+                              className="flex size-6 shrink-0"
+                              alt="icon"
+                            />
+                            Delete
+                          </button>
+                        </div>
                       </div>
                       <hr className="border-monday-border last:hidden" />
                     </React.Fragment>

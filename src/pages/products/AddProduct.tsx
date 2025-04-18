@@ -5,7 +5,7 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { AxiosError } from "axios";
 import { ApiErrorResponse } from "../../types/types"; 
-import { Link,   } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { useRef, useState } from "react";
 import { ProductFormData, productSchema } from "../../schemas/productSchema";
 import UserProfileCard from "../../components/UserProfileCard";
@@ -20,7 +20,7 @@ const AddProduct = () => {
     "/assets/images/icons/gallery-grey.svg"
   );
 
-  // ✅ React Hook Form Setup
+  // React Hook Form Setup
   const {
     register,
     handleSubmit,
@@ -28,7 +28,7 @@ const AddProduct = () => {
     setValue,
     formState: { errors },
   } = useForm<ProductFormData>({
-    resolver: zodResolver(productSchema),
+    resolver: zodResolver(productSchema) as any, // Menambahkan type assertion
   });
 
   const onSubmit = (data: ProductFormData) => {
@@ -39,12 +39,12 @@ const AddProduct = () => {
         if (error.response) {
           const { message, errors } = error.response.data;
 
-          // ✅ Show general API error message at the top
+          // Show general API error message at the top
           if (message) {
             setError("root", { type: "server", message });
           }
 
-          // ✅ Display field-specific errors if present
+          // Display field-specific errors if present
           if (errors) {
             Object.entries(errors).forEach(([key, messages]) => {
               setError(key as keyof ProductFormData, {
@@ -119,7 +119,7 @@ const AddProduct = () => {
         </div>
         <main className="flex flex-col gap-6 flex-1">
           <div className="flex gap-6">
-            <form onSubmit={handleSubmit(onSubmit)}
+            <form onSubmit={handleSubmit((data) => onSubmit(data as ProductFormData))}
               className="flex flex-col w-full rounded-3xl p-[18px] gap-5 bg-white"
             >
               <h2 className="font-semibold text-xl capitalize">
@@ -142,8 +142,8 @@ const AddProduct = () => {
                     onChange={(e) => {
                       const file = e.target.files?.[0];
                       if (file) {
-                        setValue("thumbnail", file); // ✅ update react-hook-form
-                        setImagePreview(URL.createObjectURL(file)); // ✅ update preview
+                        setValue("thumbnail", file); // update react-hook-form
+                        setImagePreview(URL.createObjectURL(file)); // update preview
                       } else {
                         setImagePreview(
                           "/assets/images/icons/gallery-grey.svg"

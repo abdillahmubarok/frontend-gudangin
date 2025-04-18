@@ -28,7 +28,8 @@ const EditAssignProduct = () => {
   const { data: product, isLoading: loadingProduct } = useFetchProduct(
     Number(productId)
   );
-  const { mutate: updateStock, isPending, error } = useUpdateMerchantProduct();
+  // PERBAIKAN: Hapus isPending dan error yang tidak digunakan
+  const { mutate: updateStock } = useUpdateMerchantProduct();
 
   const merchantProduct = merchant?.products?.find(
     (product) => product.id === Number(productId)
@@ -36,7 +37,8 @@ const EditAssignProduct = () => {
 
   const warehouseId = merchantProduct?.pivot?.warehouse_id;
 
-  const { data: warehouse, isLoading: loadingWarehouse } = useFetchWarehouse(
+  // PERBAIKAN: Hapus loadingWarehouse yang tidak digunakan
+  const { data: warehouse } = useFetchWarehouse(
     Number(warehouseId)
   );
 
