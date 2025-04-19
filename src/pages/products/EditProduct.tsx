@@ -3,7 +3,7 @@ import { Link, useParams } from "react-router-dom";
 import Sidebar from "../../components/Sidebar";
 import { useFetchProduct, useUpdateProduct } from "../../hooks/useProducts";
 import { useFetchCategories } from "../../hooks/useCategories";
-import { useForm } from "react-hook-form";
+import { useForm, Resolver } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { ProductFormData, productSchema } from "../../schemas/productSchema";
 import { AxiosError } from "axios";
@@ -29,7 +29,7 @@ const EditProduct = () => {
     setValue,
     formState: { errors },
   } = useForm<ProductFormData>({
-    resolver: zodResolver(productSchema) as any, // Menambahkan type assertion
+    resolver: zodResolver(productSchema) as Resolver<ProductFormData>,
   });
 
   useEffect(() => {
