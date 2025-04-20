@@ -1,9 +1,9 @@
 import axios from "axios";
-// import Cookies from "js-cookie"; // ✅ Import js-cookie
+// import Cookies from "js-cookie"; 
 
 const apiClient = axios.create({
-  baseURL: "https://demogudangin.mubarokah.com/api", // ✅ Adjusted for API routes
-  withCredentials: true, // ✅ Required for Sanctum authentication
+  baseURL: "https://demogudangin.mubarokah.com/api", // Disesuaikan dengan domain backend yang sebenarnya
+  withCredentials: true, // Diperlukan untuk autentikasi Sanctum
   withXSRFToken: true,
   headers: {
     Accept: "application/json",
@@ -11,23 +11,16 @@ const apiClient = axios.create({
   },
 });
 
-// ✅ Interceptor to Ensure CSRF Token is Sent
+// Interceptor untuk memastikan CSRF Token dikirim
 apiClient.interceptors.request.use(async (config) => {
   
-  // Ensure CSRF token is fetched before login/register
+  // Pastikan CSRF token diambil sebelum login/register
   if (config.url?.includes("/login") || config.url?.includes("/register")) {
     await axios.get("https://demogudangin.mubarokah.com/sanctum/csrf-cookie", {
-        withCredentials: true, // ✅ Must include credentials to receive CSRF cookie
+        withCredentials: true,
         withXSRFToken: true,
     });
   }
-
-  // ✅ Read CSRF token from cookie and set it in headers
-  // const csrfToken = Cookies.get("XSRF-TOKEN");
-
-  // if (csrfToken) {
-  //   config.headers["X-XSRF-TOKEN"] = csrfToken;
-  // }
 
   return config;
 });
