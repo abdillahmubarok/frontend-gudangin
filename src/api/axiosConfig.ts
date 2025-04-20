@@ -2,7 +2,7 @@ import axios from "axios";
 // import Cookies from "js-cookie"; // ✅ Import js-cookie
 
 const apiClient = axios.create({
-  baseURL: "https://demo.mubarokah.com/gudangin/api", // ✅ Adjusted for API routes
+  baseURL: "https://demogudangin.mubarokah.com/api", // ✅ Adjusted for API routes
   withCredentials: true, // ✅ Required for Sanctum authentication
   withXSRFToken: true,
   headers: {
@@ -16,7 +16,7 @@ apiClient.interceptors.request.use(async (config) => {
   
   // Ensure CSRF token is fetched before login/register
   if (config.url?.includes("/login") || config.url?.includes("/register")) {
-    await axios.get("https://demo.mubarokah.com/gudangin/sanctum/csrf-cookie", {
+    await axios.get("https://demogudangin.mubarokah.com/sanctum/csrf-cookie", {
         withCredentials: true, // ✅ Must include credentials to receive CSRF cookie
         withXSRFToken: true,
     });
